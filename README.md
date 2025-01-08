@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Welcome to your Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
@@ -48,3 +49,26 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+=======
+# BookRoute Management System
+
+A React Native-based book distribution management system designed for admins and workers. The app facilitates efficient task management, live location tracking, feedback collection, and secure role-based authentication.
+
+## Features
+
+- **Admin Dashboard**: Assign tasks, manage schools, publishers, and workers, view reports, and track live locations.
+- **Worker Dashboard**: View assigned tasks, submit feedback, and share live locations.
+- **Authentication**: Secure login, signup, and password recovery.
+
+## Tech Stack
+
+- **Frontend**: React Native (Expo)
+- **Authentication**: Firebase/Auth0
+- **Maps Integration**: Google Maps API
+
+## Getting Started
+
+### Prerequisites
+- Node.js >= 14.x
+- Expo CLI
+>>>>>>> 15d0a4c6edbc7c5bce33498c3fd9021746591030
