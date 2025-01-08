@@ -1,15 +1,25 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { TextInput, Button, Card, Title, Paragraph } from 'react-native-paper';
+import { TextInput, Button, Card, Title, Paragraph, Text } from 'react-native-paper';
 import { Link } from 'expo-router';
+import { loginUser } from '../services/auth';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleLogin = () => {
-    // Implement login logic here
-    console.log('Login attempt with:', email, password);
+  const handleLogin = async () => {
+    try {
+      setLoading(true);
+      setError('');
+      await loginUser(email, password);
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -33,9 +43,16 @@ const LoginScreen = () => {
             style={styles.input}
             secureTextEntry
           />
-          <Button mode="contained" onPress={handleLogin} style={styles.button}>
+          <Button 
+            mode="contained" 
+            onPress={handleLogin} 
+            style={styles.button}
+            loading={loading}
+            disabled={loading}
+          >
             Login
           </Button>
+          {error ? <Text style={styles.error}>{error}</Text> : null}
           <View style={styles.links}>
             <Link href="/signup">
               <Paragraph>Don't have an account? Sign up</Paragraph>
@@ -74,6 +91,10 @@ const styles = StyleSheet.create({
     marginTop: 16,
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  error: {
+    color: 'red',
+    marginTop: 12,
   },
 });
 

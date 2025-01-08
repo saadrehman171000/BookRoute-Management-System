@@ -1,14 +1,26 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { TextInput, Button, Card, Title, Paragraph } from 'react-native-paper';
 import { Link } from 'expo-router';
+import { resetPassword } from '../services/auth';
 
 const ForgotPasswordScreen = () => {
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
 
-  const handleResetPassword = () => {
-    // Implement password reset logic here
-    console.log('Password reset requested for:', email);
+  const handleResetPassword = async () => {
+    try {
+      setLoading(true);
+      setError('');
+      await resetPassword(email);
+      setSuccess(true);
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -27,9 +39,21 @@ const ForgotPasswordScreen = () => {
             style={styles.input}
             keyboardType="email-address"
           />
-          <Button mode="contained" onPress={handleResetPassword} style={styles.button}>
+          <Button 
+            mode="contained" 
+            onPress={handleResetPassword} 
+            style={styles.button}
+            loading={loading}
+            disabled={loading}
+          >
             Reset Password
           </Button>
+          {error ? <Text style={styles.error}>{error}</Text> : null}
+          {success ? (
+            <Text style={styles.success}>
+              Password reset email sent! Check your inbox.
+            </Text>
+          ) : null}
           <View style={styles.links}>
             <Link href="/login">
               <Paragraph>Back to Login</Paragraph>
@@ -68,6 +92,14 @@ const styles = StyleSheet.create({
   links: {
     marginTop: 16,
     alignItems: 'center',
+  },
+  error: {
+    color: 'red',
+    marginTop: 8,
+  },
+  success: {
+    color: 'green',
+    marginTop: 8,
   },
 });
 

@@ -2,16 +2,30 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TextInput, Button, Card, Title, Paragraph } from 'react-native-paper';
 import { Link } from 'expo-router';
+import { signupAdmin } from '../services/auth';
 
 const SignupScreen = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSignup = () => {
-    // Implement signup logic here
-    console.log('Signup attempt with:', name, email, password);
+  const handleSignup = async () => {
+    if (password !== confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await signupAdmin(email, password, name);
+      alert('Please check your email to verify your account');
+    } catch (error: any) {
+      alert(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -50,7 +64,13 @@ const SignupScreen = () => {
             style={styles.input}
             secureTextEntry
           />
-          <Button mode="contained" onPress={handleSignup} style={styles.button}>
+          <Button 
+            mode="contained" 
+            onPress={handleSignup} 
+            style={styles.button}
+            loading={loading}
+            disabled={loading}
+          >
             Sign Up
           </Button>
           <View style={styles.links}>
